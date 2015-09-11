@@ -19,8 +19,8 @@ void destroy_remaining_heap_allocations(Matrix_t **mats, unsigned int num_mats);
 /*
  * PURPOSE: Main function of program
  * INPUTS:
- *		-argc : Number of command line inputs
- *		-argv : Pointer to char* containing first command line input
+ *   argc : Number of command line inputs
+ *	 argv : Pointer to char* containing first command line input
  * RETURN: NONE
  **/
 int main (int argc, char **argv) {
@@ -91,9 +91,9 @@ int main (int argc, char **argv) {
 /*
  * PURPOSE: Run user inputted commands
  * INPUTS:
- *		-cmd : Pointer to Commands_t to run
- *		-mats : Pointer to Matrix_t array
- *		-num_mats : Number of matrices in mats array
+ *	cmd : Pointer to Commands_t to run
+ *	mats : Pointer to Matrix_t array
+ *	num_mats : Number of matrices in mats array
  * RETURN: NONE
  **/
 void run_commands (Commands_t* cmd, Matrix_t** mats, unsigned int num_mats) {
@@ -292,9 +292,9 @@ void run_commands (Commands_t* cmd, Matrix_t** mats, unsigned int num_mats) {
 /*
  * PURPOSE: Find matrix by name in array
  * INPUTS:
- *		-mats : Pointer to array of Matrix_t to free
- *		-num_mats : Size of mats array
- *		-target : String of name to find
+ *	mats : Pointer to array of Matrix_t to free
+ *	num_mats : Size of mats array
+ *	target : String of name to find
  * RETURN: Index of the found matrix in array, if not found then -1 is returned
  **/
 unsigned int find_matrix_given_name (Matrix_t** mats, unsigned int num_mats, const char* target) {
@@ -317,8 +317,8 @@ unsigned int find_matrix_given_name (Matrix_t** mats, unsigned int num_mats, con
 /*
  * PURPOSE: Free all heap allocated memory
  * INPUTS:
- *		-mats : Pointer to array of Matrix_t to free
- *		-num_mats : Size of mats array
+ *	mats : Pointer to array of Matrix_t to free
+ *	num_mats : Size of mats array
  * RETURN: NONE
  **/
 void destroy_remaining_heap_allocations(Matrix_t **mats, unsigned int num_mats) {

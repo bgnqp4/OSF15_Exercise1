@@ -166,7 +166,7 @@ bool bitwise_shift_matrix (Matrix_t* a, char direction, unsigned int shift) {
  * INPUTS: 
  *	a : Pointer to first Matrix_t to add
  *	b : Pointer to second Matrix_t to add
- *  a : Pointer to Matrix_t to store result of addition between a and b
+ *  c : Pointer to Matrix_t to store result of addition between a and b
  * RETURN: True if successful addition occurred, else false
  **/
 bool add_matrices (Matrix_t* a, Matrix_t* b, Matrix_t* c) {
