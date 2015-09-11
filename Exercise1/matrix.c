@@ -32,17 +32,26 @@ void load_matrix (Matrix_t* m, unsigned int* data);
 
 bool create_matrix (Matrix_t** new_matrix, const char* name, const unsigned int rows,
 						const unsigned int cols) {
+	// Check parameters
+	if(!new_matrix || !name) {
+		return false;
+	} else if((rows == 0) || (cols == 0)) {
+		return false;
+	}
 
-	//TODO ERROR CHECK INCOMING PARAMETERS
-
+	// Allocate Matrix_t structure
 	*new_matrix = calloc(1,sizeof(Matrix_t));
 	if (!(*new_matrix)) {
 		return false;
 	}
+	
+	// Allocate the data for the matrix
 	(*new_matrix)->data = calloc(rows * cols,sizeof(unsigned int));
 	if (!(*new_matrix)->data) {
 		return false;
 	}
+	
+	// Set values
 	(*new_matrix)->rows = rows;
 	(*new_matrix)->cols = cols;
 	unsigned int len = strlen(name) + 1; 
@@ -54,24 +63,32 @@ bool create_matrix (Matrix_t** new_matrix, const char* name, const unsigned int 
 
 }
 
-	//TODO FUNCTION COMMENT
-
+/* 
+ * PURPOSE: Frees memory associated with Matrix supplied
+ * INPUTS: 
+ *	m : Pointer to the Matrix_t pointer desired to have memory freed
+ * RETURN: NONE
+ **/
 void destroy_matrix (Matrix_t** m) {
+	//Check parameter
+	if(!m || !(*m) || !((*m)->data)) {
+		return;
+	}
 
-	//TODO ERROR CHECK INCOMING PARAMETERS
-	
 	free((*m)->data);
 	free(*m);
 	*m = NULL;
 }
 
-
-	
-	//TODO FUNCTION COMMENT
+/* 
+ * PURPOSE: Check if matrices are equivalent
+ * INPUTS: 
+ *	a : Pointer to Matrix_t of first matrix to compare
+ *	b : Pointer to Matrix_t of second matrix to compare
+ * RETURN: True if the supplied matrices are equivalent, else false
+ **/
 bool equal_matrices (Matrix_t* a, Matrix_t* b) {
-
-	//TODO ERROR CHECK INCOMING PARAMETERS
-	
+	// Check parameters
 	if (!a || !b || !a->data || !b->data) {
 		return false;	
 	}
@@ -83,13 +100,16 @@ bool equal_matrices (Matrix_t* a, Matrix_t* b) {
 	return false;
 }
 
-	//TODO FUNCTION COMMENT
+/* 
+ * PURPOSE: Copy contents of one matrix into another
+ * INPUTS: 
+ *	src : Pointer to Matrix_t to used be as the source for the copying
+ *	dest : Pointer to Matrix_t to used be as the destination for the copying
+ * RETURN: NONE
+ **/
 bool duplicate_matrix (Matrix_t* src, Matrix_t* dest) {
-
-
-	//TODO ERROR CHECK INCOMING PARAMETERS
-
-	if (!src) {
+	// Check parameters
+	if (!src || !dest || !src->data || !dest->data) {
 		return false;
 	}
 	/*
@@ -100,14 +120,24 @@ bool duplicate_matrix (Matrix_t* src, Matrix_t* dest) {
 	return equal_matrices (src,dest);
 }
 
-	//TODO FUNCTION COMMENT
+/* 
+ * PURPOSE: Bitwise shift matrix based on arguments supplied
+ * INPUTS: 
+ *	a : Pointer to Matrix_t to shift
+ *	direction : Character to specify left or right shift
+ *  shift : Unsigned int to shift matrix by
+ * RETURN: True if successful shift occurred, else false
+ **/
 bool bitwise_shift_matrix (Matrix_t* a, char direction, unsigned int shift) {
 	
-	//TODO ERROR CHECK INCOMING PARAMETERS
-	if (!a) {
+	// Check parameters
+	if (!a || !a->data) {
+		return false;
+	} else if((direction != 'l') && (direction != 'r')) {
 		return false;
 	}
 
+	// Left shift
 	if (direction == 'l') {
 		unsigned int i = 0;
 		for (; i < a->rows; ++i) {
@@ -118,7 +148,7 @@ bool bitwise_shift_matrix (Matrix_t* a, char direction, unsigned int shift) {
 		}
 
 	}
-	else {
+	else { // Right shift
 		unsigned int i = 0;
 		for (; i < a->rows; ++i) {
 			unsigned int j = 0;
@@ -131,11 +161,20 @@ bool bitwise_shift_matrix (Matrix_t* a, char direction, unsigned int shift) {
 	return true;
 }
 
-	//TODO FUNCTION COMMENT
+/* 
+ * PURPOSE: Add two matrices together
+ * INPUTS: 
+ *	a : Pointer to first Matrix_t to add
+ *	b : Pointer to second Matrix_t to add
+ *  a : Pointer to Matrix_t to store result of addition between a and b
+ * RETURN: True if successful addition occurred, else false
+ **/
 bool add_matrices (Matrix_t* a, Matrix_t* b, Matrix_t* c) {
 
-	//TODO ERROR CHECK INCOMING PARAMETERS
-
+	// Check parameters
+	if(!a || !b || !c || !a->data || !b->data || !c->data) {
+		return false;
+	}
 	if (a->rows != b->rows && a->cols != b->cols) {
 		return false;
 	}
@@ -148,11 +187,18 @@ bool add_matrices (Matrix_t* a, Matrix_t* b, Matrix_t* c) {
 	return true;
 }
 
-	//TODO FUNCTION COMMENT
+/* 
+ * PURPOSE: Print contents of matrix
+ * INPUTS: 
+ *	m : Pointer to Matrix_t to display
+ * RETURN: NONE
+ **/
 void display_matrix (Matrix_t* m) {
 	
-	//TODO ERROR CHECK INCOMING PARAMETERS
-
+	// Check parameter
+	if(!m || !m->data) {
+		return;
+	}
 
 	printf("\nMatrix Contents (%s):\n", m->name);
 	printf("DIM = (%u,%u)\n", m->rows, m->cols);
@@ -166,10 +212,18 @@ void display_matrix (Matrix_t* m) {
 
 }
 
-	//TODO FUNCTION COMMENT
+/* 
+ * PURPOSE: Read a matrix from a file into a Matrix_t structure
+ * INPUTS: 
+ *	martix_input_filename : filename to read matrix from
+ *	m : Pointer to Matrix_t pointer load matrix from file into
+ * RETURN: True if successful read and load, else false
+ **/
 bool read_matrix (const char* matrix_input_filename, Matrix_t** m) {
-	
-	//TODO ERROR CHECK INCOMING PARAMETERS
+	// Check parameter
+	if(!matrix_input_filename || !m) {
+		return false;
+	}
 
 
 	int fd = open(matrix_input_filename,O_RDONLY);
@@ -299,10 +353,19 @@ bool read_matrix (const char* matrix_input_filename, Matrix_t** m) {
 	return true;
 }
 
-	//TODO FUNCTION COMMENT
+/* 
+ * PURPOSE: Write a Matrix_t to a file
+ * INPUTS: 
+ *	martix_output_filename : filename to write matrix to
+ *	m : Pointer to Matrix_t to write to file
+ * RETURN: True if successful write, else false
+ **/
 bool write_matrix (const char* matrix_output_filename, Matrix_t* m) {
 	
-	//TODO ERROR CHECK INCOMING PARAMETERS
+	//Check parameter
+	if(!matrix_output_filename || !m || !m->data) {
+		return false;
+	}
 
 	int fd = open (matrix_output_filename, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	/* ERROR HANDLING USING errorno*/
@@ -367,11 +430,20 @@ bool write_matrix (const char* matrix_output_filename, Matrix_t* m) {
 	return true;
 }
 
-	//TODO FUNCTION COMMENT
+/* 
+ * PURPOSE: Load random numbers into matrix supplied
+ * INPUTS: 
+ *	m : Pointer to Matrix_t to load random numbers into
+ *	start_range : Starting number for the range of random numbers to use
+ *  end_range : Ending number for the range of random numbers to use
+ * RETURN: True if successful initialization of random values, else false
+ **/
 bool random_matrix(Matrix_t* m, unsigned int start_range, unsigned int end_range) {
 	
-	//TODO ERROR CHECK INCOMING PARAMETERS
-
+	//Check parameter
+	if(!m || !m->data) {
+		return false;
+	}
 	for (unsigned int i = 0; i < m->rows; ++i) {
 		for (unsigned int j = 0; j < m->cols; ++j) {
 			m->data[i * m->cols + j] = rand() % (end_range + 1 - start_range) + start_range;
@@ -382,19 +454,38 @@ bool random_matrix(Matrix_t* m, unsigned int start_range, unsigned int end_range
 
 /*Protected Functions in C*/
 
-	//TODO FUNCTION COMMENT
+/* 
+ * PURPOSE: Load data into Matrix_t
+ * INPUTS: 
+ *	m : Pointer to Matrix_t to load data into numbers into
+ *	data : Pointer to data to load into the matrix
+ * RETURN: NONE
+ **/
 void load_matrix (Matrix_t* m, unsigned int* data) {
-	
-	//TODO ERROR CHECK INCOMING PARAMETERS
+	// Check parameters
+	if(!m || !m->data || !data) {
+		return;
+	}
 	memcpy(m->data,data,m->rows * m->cols * sizeof(unsigned int));
 }
 
-	//TODO FUNCTION COMMENT
+/* 
+ * PURPOSE: Add matrix to the array of matrices
+ * INPUTS: 
+ *	mats : Array of Martix_t pointers
+ *  new_matrix : Pointer to new matrix to add
+ *  num_mats : Number of matrices in array
+ * RETURN: The array index one after the new matrix position, else returns -1
+ **/
 unsigned int add_matrix_to_array (Matrix_t** mats, Matrix_t* new_matrix, unsigned int num_mats) {
-	
-	//TODO ERROR CHECK INCOMING PARAMETERS
 	static long int current_position = 0;
 	const long int pos = current_position % num_mats;
+
+	// Check parameters
+	if(!mats || !new_matrix) {
+		return -1;
+	}
+
 	if ( mats[pos] ) {
 		destroy_matrix(&mats[pos]);
 	} 

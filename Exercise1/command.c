@@ -9,10 +9,19 @@
 #define MAX_CMD_LEN 25
 
 
-	//TODO FUNCTION COMMENT
+/*
+ * PURPOSE: Parse the supplied string and store in in cmd structure provided
+ * INPUTS:
+ *		-input : user command line input
+ *		-cmd : Pointer to Commands_t* to store the parsed input in
+ * RETURN: True on successful parse and storing, else false
+ **/
 bool parse_user_input (const char* input, Commands_t** cmd) {
-	
-	//TODO ERROR CHECK INCOMING PARAMETERS
+
+	// Check parameters
+	if(!input || !cmd) {
+		return false;
+	}
 
 	char *string = strdup(input);
 	
@@ -36,10 +45,18 @@ bool parse_user_input (const char* input, Commands_t** cmd) {
 	return true;
 }
 
-	//TODO FUNCTION COMMENT
+/*
+ * PURPOSE: Free the allocated memory used for storing parsed commands
+ * INPUTS:
+ *		-cmd : Pointer to Commands_t* of memory to free with
+ * RETURN: NONE
+ **/
 void destroy_commands(Commands_t** cmd) {
 
-	//TODO ERROR CHECK INCOMING PARAMETERS
+	// Check parameter
+	if(!cmd || !(*cmd)) {
+		return;
+	}
 	
 	for (int i = 0; i < (*cmd)->num_cmds; ++i) {
 		free((*cmd)->cmds[i]);
